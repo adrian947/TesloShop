@@ -17,7 +17,7 @@ export const NavBar = () => {
     <AppBar>
       <Toolbar>
         <NextLink href='/' passHref>
-          <Link display='flex' alignItems='center'>
+          <Link display='flex' alignItems='center' gap={4}>
             <Typography variant='h6'>Teslo</Typography>
             <Typography variant='h6' sx={{ ml: 0.5 }}>
               Shop
@@ -57,7 +57,7 @@ export const NavBar = () => {
             </IconButton>
           </Link>
         </NextLink>
-        <Button>
+        <Button sx={{marginLeft: '30px'}}>
           Menu
         </Button>
       </Toolbar>

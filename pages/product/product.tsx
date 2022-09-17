@@ -3,8 +3,9 @@ import { ShopLayout } from '../../components/layout';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { Typography, Button, Chip } from '@mui/material';
-import { ProductSlideShow } from '../../components/products';
+import { ProductSlideShow, Sizes } from '../../components/products';
 import { initialData } from './../../database/products';
+import { ItemCounter } from '../../components/ui';
 
 const product = initialData.products[0]
 
@@ -25,8 +26,10 @@ const ProductView: NextPage = () => {
                         </Typography>
                         <Box sx={{ my: 2 }}>
                             <Typography variant='subtitle2'>
-
+                                Quantity
                             </Typography>
+                            <ItemCounter />
+                            <Sizes sizes={product.sizes} />
                         </Box>
                         <Button color='secondary' className="circular-btn" >
                             Add to cart
