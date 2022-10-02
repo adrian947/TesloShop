@@ -10,19 +10,18 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   let { q = "" } = req.query;
+  q = q.toString().toLowerCase();
 
   db.connect();
 
-  q = q.toString().toLowerCase();
-
-  const products = await Product.find({ $text: { $search: q } })
-    .select("title images price inStock slug -_id")
-    .lean();
+  const products = await Product.find({ $text: { $search: q } }).select(
+    "title images price inStock slug -_id"
+  );
 
   if (!products.length) {
     res.status(404).json({ msg: "product not found" });
   }
-
   res.status(200).json(products);
+
   db.disconnect();
 }

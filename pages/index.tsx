@@ -1,11 +1,18 @@
+
 import Typography from "@mui/material/Typography";
 import type { NextPage } from "next";
 import Head from "next/head";
+import { useProducts } from "../hooks";
 import { ShopLayout } from "./../components/layout";
-import { initialData } from "../database/products";
 import { ProductList } from "../components/products";
+import FullScreenLoading from "../components/ui/FullScreenLoading";
+import { initialData } from './../database/products';
 
 const Home: NextPage = () => {
+
+  const { products, error, isLoading } = useProducts('/products')
+  if (isLoading) return <FullScreenLoading />;
+
   return (
     <div>
       <Head>
@@ -24,7 +31,7 @@ const Home: NextPage = () => {
         <Typography variant='h2' sx={{ mb: 1 }}>
           Todos los productos
         </Typography>
-        <ProductList products={initialData.products as any}/>
+        <ProductList products={products} />
       </ShopLayout>
     </div>
   );

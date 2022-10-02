@@ -1,26 +1,45 @@
 import { Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from "@mui/material"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faUser, faTicket, faKey, faRightFromBracket, faBoxesStacked, faUsers, faMars, faVenus, faPersonBreastfeeding } from '@fortawesome/free-solid-svg-icons'
+import { useContext, useState } from 'react';
+import { UiContext } from "../../context";
+import { useRouter } from 'next/router';
+
 
 export const SideMenu = () => {
+    const { isMenuOpen, toogleSideMenu } = useContext(UiContext)
+    const [searchTerm, setSearchTerm] = useState('')
+    const router = useRouter();
+
+    const onSearchTerm = (e: string) => {
+        if (searchTerm.trim().length === 0) return;
+        if (e === 'Enter') {
+            router.push(`/search/${searchTerm}`)
+            toogleSideMenu();
+            setSearchTerm('');
+        }
+    }
+
     return (
         <Drawer
-            open={false}
+            open={isMenuOpen}
             anchor='right'
             sx={{ backdropFilter: 'blur(4px)', transition: 'all 0.5s ease-out' }}
+            onClose={toogleSideMenu}
         >
             <Box sx={{ width: 250, paddingTop: 5 }}>
-
                 <List>
-
                     <ListItem>
                         <Input
                             type='text'
                             placeholder="Buscar..."
+                            value={searchTerm}
+                            onChange={e => setSearchTerm(e.target.value)}
+                            onKeyPress={e => onSearchTerm(e.key)}
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
-                                        aria-label="toggle password visibility"
+                                        onClick={() => onSearchTerm('Enter')}
                                     >
                                         <FontAwesomeIcon icon={faSearch} />
                                     </IconButton>

@@ -14,7 +14,7 @@ export default async function handler(
   db.connect();
 
   const products = await Product.find({ slug })
-    .select("title images price inStock slug -_id")
+    .select("title images price inStock slug sizes -_id")
     .lean();
 
   if (!products.length) {
