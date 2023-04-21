@@ -12,9 +12,6 @@ interface Props {
 
 
 const SearchPage: NextPage<Props> = ({ products }) => {
-
-    console.log(products)
-
     return (
         <div>
             <ShopLayout
@@ -42,13 +39,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
     let products = await getProductsBySearchQuery(query);
 
-    if(!products.length){
+    if (!products.length) {
         products = await getProductsBySearchQuery('jacket');
     }
 
     return {
         props: {
-            products,          
+            products,
         }
     }
 }

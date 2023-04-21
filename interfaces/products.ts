@@ -14,6 +14,6 @@ export interface IProduct {
   updatedAt: string;
 }
 
-export type ISize = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "XXXL";
+export type ISize = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "XXXL" | null;
 export type IType = "shirts" | "pants" | "hoodies" | "hats";
 
