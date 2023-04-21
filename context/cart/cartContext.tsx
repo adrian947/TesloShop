@@ -1,8 +1,9 @@
 import { createContext } from 'react';
-import { ICartProduct } from '../../interfaces';
+import { ICartProduct, OrderSummary } from '../../interfaces';
 
 interface ContextProps {
     cart: ICartProduct[];
+    summary: OrderSummary;
     handleAddProductInCart: (payload:ICartProduct)=> void
     updateCartQuantity: (payload:ICartProduct)=> void
     removeFromCart: (payload:ICartProduct)=> void

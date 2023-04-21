@@ -1,14 +1,16 @@
 import { FC, useReducer, useEffect } from "react";
-import { ICartProduct } from "../../interfaces";
+import { ICartProduct, OrderSummary } from "../../interfaces";
 import { CartContext, CartReducer } from "./";
 import Cookie from "js-cookie";
 
 export interface CartState {
   cart: ICartProduct[];
+  summary: OrderSummary;
 }
 
 const Cart_inicitialState: CartState = {
   cart: [],
+  summary: { total: 0, quantityunit: 0, quantityItems: 0, tax: 0, subTotal: 0 },
 };
 interface Props {
   children: React.ReactNode;
@@ -30,6 +32,28 @@ export const CartProvider: FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (state.cart.length > 0) Cookie.set("cart", JSON.stringify(state.cart));
+  }, [state.cart]);
+
+  useEffect(() => {
+    const orderSumary = {
+      subTotal: state.cart.reduce((acc, product) => {
+        acc = acc + product.price * product.quantity;
+
+        return acc;
+      }, 0),
+      quantityunit: state.cart.reduce(
+        (acc, product) => acc + product.quantity,
+        0
+      ),
+      quantityItems: state.cart.length,
+      tax: 0,
+      total: 0,
+    };
+
+    orderSumary.tax = parseFloat((orderSumary.subTotal * 0.1).toFixed(2));
+    orderSumary.total = orderSumary.subTotal + orderSumary.tax;
+
+    dispatch({ type: "[Cart] - Order Summary", payload: orderSumary });
   }, [state.cart]);
 
   const handleAddProductInCart = (payload: ICartProduct) => {

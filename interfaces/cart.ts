@@ -11,3 +11,11 @@ export interface ICartProduct {
   quantity: number;
   inStock: number,
 }
+
+export interface OrderSummary {
+  total: number,
+  quantityunit: number,
+  quantityItems: number,
+  tax: number,
+  subTotal: number,
+}
