@@ -1,7 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { db, seedDatabase } from "../../database";
+import { db, seedDatabase, seedDatabaseUser } from "../../database";
 import Product from "./../../models/Product";
+import { User } from "../../models";
+import { hashedUsers } from "./../../database/users";
 
 type Data = {
   msg: string;
@@ -17,8 +19,11 @@ export default async function handler(
 
   await db.connect();
 
+  await User.deleteMany();
   await Product.deleteMany();
   await Product.insertMany(seedDatabase.initialData.products);
+
+  await User.insertMany(await hashedUsers);
 
   await db.disconnect();
 
