@@ -28,17 +28,17 @@ const newUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const validatedEmail = isValidEmail(email);
 
   if (!validatedEmail) {
-    return res.status(400).json({ message: "invalid email" });
+    return res.status(400).json({ message: "Invalid email" });
   }
 
   const user = await User.findOne({ email });
   if (user) {
-    return res.status(400).json({ message: "this user already exists" });
+    return res.status(400).json({ message: "This user already exists" });
   }
   if (password.length < 6) {
     return res
       .status(400)
-      .json({ message: "password must be 6 characters or more" });
+      .json({ message: "Password must be 6 characters or more" });
   }
 
   const passwordHash = bcrypt.hashSync(password, 10);
@@ -56,6 +56,6 @@ const newUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     const token = jwt.sign({_id,  role, name, email }, process.env.SECRETKEY);
     res.status(200).json({ user: { role, name, email }, token });
   } catch (error) {
-    return res.status(400).json({ message: "user is not created" });
+    return res.status(400).json({ message: "User is not created" });
   }
 };

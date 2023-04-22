@@ -1,7 +1,6 @@
 import { ICartProduct, OrderSummary } from "../../interfaces";
 import { CartState } from ".";
 
-
 type CartActionType =
   | {
       type: "[Cart] - LoadCart from cookies | storage";

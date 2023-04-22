@@ -8,3 +8,12 @@ export interface IUser {
     updatedAt: string;
   }
   
+
+export interface IAuth {
+  user:{
+    name: string;    
+    role: "admin" | "client";
+    email: string;
+  } 
+  token: string
+}  

@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { User } from "../../../models";
 var jwt = require("jsonwebtoken");
 import bcrypt from "bcrypt";
+import { db } from "../../../database";
 
 type Data = any;
 
@@ -24,17 +25,19 @@ export default function handler(
 const loginUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { email = "", password = "" } = req.body;
 
+  await db.connect();
   const user = await User.findOne({ email });
+  await db.disconnect();
   if (!user) {
-    return res.status(400).json({ message: "user or password incorrect" });
+    return res.status(400).json({ message: "User or password incorrect" });
   }
   const isPasswordOk = await bcrypt.compare(password, user.password);
   if (!isPasswordOk) {
-    return res.status(400).json({ message: "user or password incorrect" });
+    return res.status(400).json({ message: "User or password incorrect" });
   }
-  const {_id, role, name } = user;
+  const { _id, role, name } = user;
 
-  const token = jwt.sign({_id, role, name, email }, process.env.SECRETKEY);
+  const token = jwt.sign({ _id, role, name, email }, process.env.SECRETKEY);
 
   res.status(200).json({ user: { role, name, email }, token });
 };
