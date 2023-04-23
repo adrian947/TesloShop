@@ -4,6 +4,7 @@ import { User } from "../../../models";
 var jwt = require("jsonwebtoken");
 import bcrypt from "bcrypt";
 import { isValidEmail } from "./../../../helpers/validationEmail";
+import { db } from "../../../database";
 
 type Data = any;
 
@@ -31,7 +32,9 @@ const newUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     return res.status(400).json({ message: "Invalid email" });
   }
 
+  await db.connect();
   const user = await User.findOne({ email });
+ 
   if (user) {
     return res.status(400).json({ message: "This user already exists" });
   }
@@ -58,4 +61,5 @@ const newUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   } catch (error) {
     return res.status(400).json({ message: "User is not created" });
   }
+  await db.disconnect();
 };
