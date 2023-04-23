@@ -6,11 +6,11 @@ import { baseAxios } from "../../api";
 import { validateToken } from "../../api/apiAuth";
 
 export interface AuthState {
-  user: IAuth | {};
+  user: IAuth | null;
 }
 
 const User_inicitialState: AuthState = {
-  user: {},
+  user: null,
 };
 interface Props {
   children: React.ReactNode;
@@ -21,7 +21,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, User_inicitialState);
 
   useEffect(() => {
-    if (isFirstRender.current) {
+    if (isFirstRender.current && Cookies.get('token')) {
       checkToken();
     }
     isFirstRender.current = false;
@@ -54,11 +54,19 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     Cookies.set("token", JSON.stringify(user.token));
   };
 
+  const handleLogOut = ()=>{
+    dispatch({
+      type: "[user] - Logout",
+    })
+    Cookies.remove("token");
+  }
+
   return (
     <AuthContext.Provider
       value={{
         ...state,
         handleStateUser,
+        handleLogOut,
       }}
     >
       {children}

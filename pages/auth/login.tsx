@@ -13,6 +13,7 @@ import AuthLayout from "./../../components/layout/AuthLayout";
 import NextLink from "next/link";
 import { onLogin } from "../../api";
 import { AuthContext } from "../../context";
+import { useRouter } from "next/router";
 
 type FormData = {
   email: string;
@@ -26,8 +27,10 @@ const Login = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const { handleStateUser }= useContext(AuthContext)
-
+  const { handleStateUser } = useContext(AuthContext);
+  const router = useRouter();
+  const query = router.query.p?.toString() || "/";
+  
   const [error, setError] = useState(null);
 
   const handleLogin = async (data: FormData) => {
@@ -38,7 +41,9 @@ const Login = () => {
         setError(null);
       }, 3000);
     }
-    handleStateUser(user)
+    handleStateUser(user);
+
+    router.replace(query);
   };
 
   return (
@@ -92,7 +97,7 @@ const Login = () => {
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <NextLink href='/auth/register' passHref>
+              <NextLink href={`/auth/register?p=${query}`} passHref>
                 <Link underline='always'>Register now!</Link>
               </NextLink>
             </Grid>

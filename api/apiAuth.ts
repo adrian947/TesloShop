@@ -23,7 +23,7 @@ export const onRegister = async (userInput: Data) => {
   }
 };
 
-export const validateToken = async () => {
+export const validateToken = async () => {  
   try {
     const { data } = await baseAxios.get("/user/validate-token");
     return data;

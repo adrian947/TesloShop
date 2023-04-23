@@ -13,6 +13,7 @@ import AuthLayout from "./../../components/layout/AuthLayout";
 import NextLink from "next/link";
 import { onRegister } from "../../api";
 import { AuthContext } from "../../context";
+import { useRouter } from "next/router";
 
 type FormData = {
   email: string;
@@ -27,6 +28,8 @@ const Register = () => {
     formState: { errors },
   } = useForm<FormData>();
   const [error, setError] = useState(null);
+  const router = useRouter();
+  const query = router.query.p?.toString() || "/";
 
   const { handleStateUser }= useContext(AuthContext)
 
@@ -98,12 +101,12 @@ const Register = () => {
                 fullWidth
                 color='secondary'
                 type='submit'
-              >
+              >                
                 Register
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <NextLink href='/auth/login' passHref>
+              <NextLink  href={`/auth/login?p=${query}`} passHref>
                 <Link underline='always'>Sign In now!</Link>
               </NextLink>
             </Grid>

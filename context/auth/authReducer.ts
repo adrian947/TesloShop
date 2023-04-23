@@ -2,8 +2,8 @@ import { AuthState } from ".";
 import { IAuth } from "../../interfaces/user";
 
 type AuthActionType = {
-  type: "[user] - Login";
-  payload: IAuth;
+  type: "[user] - Login" | "[user] - Logout";
+  payload?: IAuth;
 };
 
 export const AuthReducer = (
@@ -15,6 +15,11 @@ export const AuthReducer = (
       return {
         ...state,
         user: { ...action.payload },
+      };
+    case "[user] - Logout":
+      return {
+        ...state,
+        user: null,
       };
 
     default:

@@ -1,16 +1,12 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { User } from "../../../models";
-import { IUser } from "../../../interfaces/user";
+import { validatedToken } from "../../../helpers/validationToken";
 const jwt = require("jsonwebtoken");
 
 type Data = any;
 
-interface JwtPayload {
-  email: string;
-  role: string;
-  name: string;
-}
+
 
 export default function handler(
   req: NextApiRequest,
@@ -27,23 +23,14 @@ export default function handler(
   }
 }
 
-const checkJWT = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+export const checkJWT = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { token = "" } = req.cookies;
 
   const parsedToken = token ? JSON.parse(token) : null;
-
-  const userVerify = new Promise<JwtPayload>((resolve, reject) => {
-    jwt.verify(
-      parsedToken,
-      process.env.SECRETKEY,
-      (err: any, payload: IUser) => {
-        if (err) reject("invalid token");
-        resolve(payload);
-      }
-    );
-  });
+  const userVerify = await validatedToken(parsedToken)
+  
   try {
-    const user = await userVerify;
+    const user = userVerify;
 
     const { email } = user;
 

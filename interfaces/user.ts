@@ -10,10 +10,9 @@ export interface IUser {
   
 
 export interface IAuth {
-  user:{
-    name: string;    
-    role: "admin" | "client";
-    email: string;
-  } 
-  token: string
+  name?: string;    
+  role?: "admin" | "client";
+  email?: string;
+  token?: string;
+  user?: any;
 }  

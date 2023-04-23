@@ -1,4 +1,4 @@
-import React, { useContext, FC } from "react";
+import React, { useContext, FC, useEffect } from "react";
 import { initialData } from "../../database/products";
 import {
   Grid,
@@ -19,14 +19,20 @@ interface Props {
 
 export const CartList: FC<Props> = ({ isEdit }) => {
   const { cart, updateCartQuantity, removeFromCart } = useContext(CartContext);
-
   return (
     <>
       {!cart.length ? (
-        <Typography variant='body1'>No hay productos en el carrito</Typography>
+        <Typography variant='body1'>
+          {"There isn't product in this cart"}
+        </Typography>
       ) : (
         cart.map((product) => (
-          <Grid sx={{ mb: 1 }} container spacing={2} key={product.slug + product.sizes}>
+          <Grid
+            sx={{ mb: 1 }}
+            container
+            spacing={2}
+            key={product.slug + product.sizes}
+          >
             <Grid item xs={3}>
               {/* TODO: llevar a la pagina del producto */}
               <NextLink href={`/product/${product.slug}`} passHref>
@@ -53,7 +59,9 @@ export const CartList: FC<Props> = ({ isEdit }) => {
                   <ItemCounter
                     maxValue={product.inStock}
                     currentValue={product.quantity}
-                    quantity={(e) => updateCartQuantity({...product, quantity: e})}
+                    quantity={(e) =>
+                      updateCartQuantity({ ...product, quantity: e })
+                    }
                   />
                 ) : (
                   <Typography>3 items</Typography>
@@ -68,7 +76,14 @@ export const CartList: FC<Props> = ({ isEdit }) => {
               flexDirection='column'
             >
               <Typography variant='subtitle1'>${product.price}</Typography>
-              {isEdit && <Button color='secondary' onClick={()=> removeFromCart(product)}>Remove item</Button>}
+              {isEdit && (
+                <Button
+                  color='secondary'
+                  onClick={() => removeFromCart(product)}
+                >
+                  Remove item
+                </Button>
+              )}
             </Grid>
           </Grid>
         ))
