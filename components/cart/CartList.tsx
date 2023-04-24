@@ -64,7 +64,7 @@ export const CartList: FC<Props> = ({ isEdit }) => {
                     }
                   />
                 ) : (
-                  <Typography>3 items</Typography>
+                  <Typography>{cart.length} items</Typography>
                 )}
               </Box>
             </Grid>

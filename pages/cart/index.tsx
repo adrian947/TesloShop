@@ -49,6 +49,7 @@ const CartPage = () => {
                     color='secondary'
                     sx={{ textTransform: "uppercase" }}
                     fullWidth
+                    onClick={()=> router.push('/checkout/address')}
                   >
                     CkeckOut
                   </Button>

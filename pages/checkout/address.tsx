@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext } from "react";
 import { ShopLayout } from "../../components/layout";
 import { GetServerSideProps } from "next";
 import { validatedToken } from "../../helpers/validationToken";
@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import { IAuth } from "../../interfaces/user";
 import FullScreenLoading from "../../components/ui/FullScreenLoading";
 import { Controller, useForm } from "react-hook-form";
+import { AuthContext, CartContext } from "../../context";
 
 type FormData = {
   name: string;
@@ -37,7 +38,15 @@ const AddressPage = ({ user }: IAuth) => {
 
     formState: { errors },
   } = useForm<FormData>();
-  
+  const { cart } = useContext(CartContext);
+  const { handleStateAddressUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (!cart.length) {
+      router.replace(`/cart/empty`);
+    }
+  }, [cart.length, router]);
+
   useEffect(() => {
     if (!user) {
       router.replace(`/auth/login?p=${router.asPath}`);
@@ -45,7 +54,9 @@ const AddressPage = ({ user }: IAuth) => {
   }, [user, router]);
 
   const onSubmitForm = (e: FormData) => {
-    console.log("🚀 ~ e:", e);
+    handleStateAddressUser(e);
+
+    router.replace("/checkout/summary");
   };
 
   if (!user) return <FullScreenLoading />;
